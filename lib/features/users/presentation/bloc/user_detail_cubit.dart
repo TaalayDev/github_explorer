@@ -6,8 +6,7 @@ import '../../data/models/user_detail.dart';
 import '../../data/repositories/users_repository.dart';
 
 class UserDetailCubit extends Cubit<Loadable<UserDetail>> {
-  UserDetailCubit(this._repository, this._login)
-    : super(const Loadable.loading());
+  UserDetailCubit(this._repository, this._login) : super(const Loadable.loading());
 
   final UsersRepository _repository;
   final String _login;

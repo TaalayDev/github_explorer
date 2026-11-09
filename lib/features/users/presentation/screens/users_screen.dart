@@ -34,13 +34,10 @@ class UsersScreen extends StatelessWidget {
               error: (message, previous) => previous == null
                   ? ErrorView(
                       message: localizedError(l10n, message),
-                      onRetry: () =>
-                          context.read<UsersBloc>().add(const UsersRefreshed()),
+                      onRetry: () => context.read<UsersBloc>().add(const UsersRefreshed()),
                     )
                   : const UsersList(),
-              loading: (previous) => previous == null
-                  ? const LoadingIndicator()
-                  : const UsersList(),
+              loading: (previous) => previous == null ? const LoadingIndicator() : const UsersList(),
             );
           },
         ),

@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,21 +17,27 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => UsersRepository(createApiClient()),
-      child: BlocProvider(
-        create: (context) => ConnectivityCubit(Connectivity()),
-        child: MaterialApp.router(
-          onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.defaultTheme.themeData,
-          routerConfig: appRouter,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          builder: (context, child) => Column(
-            children: [
-              Expanded(child: child!),
-              const ConnectivityBanner(),
-            ],
+      create: (context) => createApiClient(),
+      child: RepositoryProvider(
+        create: (context) => UsersRepository(context.read<Dio>()),
+        child: BlocProvider(
+          create: (context) => ConnectivityCubit(
+            Connectivity(),
+            () => isApiReachable(context.read<Dio>()),
+          ),
+          child: MaterialApp.router(
+            onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.defaultTheme.themeData,
+            routerConfig: appRouter,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            builder: (context, child) => Column(
+              children: [
+                Expanded(child: child!),
+                const ConnectivityBanner(),
+              ],
+            ),
           ),
         ),
       ),

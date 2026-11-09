@@ -24,10 +24,8 @@ class UserDetailScreen extends StatelessWidget {
         builder: (context, state) {
           return state.when(
             success: (user) => UserDetailContent(user: user),
-            error: (message, _) => ErrorView(
-              message: localizedError(l10n, message),
-              onRetry: context.read<UserDetailCubit>().load,
-            ),
+            error: (message, _) =>
+                ErrorView(message: localizedError(l10n, message), onRetry: context.read<UserDetailCubit>().load),
             empty: () => const SizedBox.shrink(),
             loading: (_) => const LoadingIndicator(),
           );
