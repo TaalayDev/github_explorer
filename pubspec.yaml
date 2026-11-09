@@ -13,8 +13,7 @@ dependencies:
     sdk: flutter
 
   # Core & State Management
-  flutter_riverpod: ^3.0.3 # State management
-  riverpod_annotation: ^3.0.3 # Code generation for Riverpod
+  flutter_bloc: ^9.1.1 # State management
   go_router: ^16.2.0 # Routing
   shared_preferences: ^2.2.2 # Simple key-value storage (settings)
 
@@ -47,22 +46,31 @@ dev_dependencies:
 
   # Linting & Code Analysis
   flutter_lints: ^6.0.0
-  riverpod_lint: ^3.0.3 # Custom lints for Riverpod
 
   # Code Generation
   build_runner: ^2.10.4
-  riverpod_generator: ^3.0.3 # Riverpod code generator
   go_router_builder: ^4.1.1 # GoRouter code generator
   freezed: ^3.0.4 # Freezed code generator
   json_serializable: ^6.9.4 # JSON serialization generator
+  flutter_native_splash: ^2.4.7
 
 flutter:
 
   uses-material-design: true
 
-  generate: true # Enables code generation for Riverpod, Freezed, and JSON serialization.
+  assets:
+    - assets/images/
+
+  generate: true # Enables code generation for Freezed and JSON serialization.
 
 # Assets Configuration, used by gassets.sh script to generate assets.dart file
 assets_dir: "assets"
 assets_output_file: "lib/config/assets.dart"
 assets_class_name: "Assets"
+
+flutter_native_splash:
+  color: "#0D1117"
+  image: assets/images/logo.png
+  android_12:
+    color: "#0D1117"
+    image: assets/images/logo.png

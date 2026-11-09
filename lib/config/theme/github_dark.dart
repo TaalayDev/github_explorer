@@ -35,7 +35,9 @@ AppTheme buildGithubDarkTheme() {
   const primary = _Gh.accentFg;
 
   final base = ThemeData(brightness: Brightness.dark).textTheme;
-  final textTheme = GoogleFonts.notoSansTextTheme(base).apply(bodyColor: _Gh.fgDefault, displayColor: _Gh.fgDefault);
+  final textTheme = GoogleFonts.notoSansTextTheme(
+    base,
+  ).apply(bodyColor: _Gh.fgDefault, displayColor: _Gh.fgDefault);
 
   TextStyle style(Color color, double size, [FontWeight? weight]) =>
       GoogleFonts.notoSans(color: color, fontSize: size, fontWeight: weight);
@@ -127,7 +129,10 @@ AppTheme buildGithubDarkTheme() {
       tabInactiveTextStyle: style(_Gh.fgMuted, 14),
       sectionHeaderTextStyle: style(_Gh.fgDefault, 18, FontWeight.w600),
       priceTextStyle: style(_Gh.fgDefault, 16, FontWeight.w600),
-      codeTextStyle: GoogleFonts.jetBrainsMono(color: _Gh.fgDefault, fontSize: 13),
+      codeTextStyle: GoogleFonts.jetBrainsMono(
+        color: _Gh.fgDefault,
+        fontSize: 13,
+      ),
     ),
   );
 }
