@@ -3,7 +3,6 @@ description: "A new Flutter project."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-
 version: 1.0.0+1
 
 environment:
@@ -33,6 +32,7 @@ dependencies:
 
   # Utilities
   logger: ^2.0.2+1 # Logging utility
+  github: ^9.26.0 # GitHub API client
 
   # UI & Theming
   cupertino_icons: ^1.0.8
@@ -40,7 +40,6 @@ dependencies:
   flutter_vector_icons: ^2.0.0 # More icon options
   shimmer: ^3.0.0 # Shimmer effect for loading placeholders
   google_fonts: ^6.1.0 # Custom fonts from Google Fonts
-  github: ^9.26.0
 
 dev_dependencies:
   flutter_test:

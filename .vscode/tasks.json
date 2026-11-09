@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dart build_runner build -d",
+      "type": "shell",
+      "command": "dart",
+      "args": ["run", "build_runner", "build", "-d"],
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

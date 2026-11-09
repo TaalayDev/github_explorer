@@ -112,19 +112,14 @@ class AppTheme {
   }
 
   AppTheme withBrandPrimary(Color brandPrimary) {
-    final onBrandPrimary =
-        ThemeData.estimateBrightnessForColor(brandPrimary) == Brightness.dark
+    final onBrandPrimary = ThemeData.estimateBrightnessForColor(brandPrimary) == Brightness.dark
         ? Colors.white
         : const Color(0xFF111827);
     final primaryDarkColor = _shiftLightness(brandPrimary, -0.18);
     final primaryVariantColor = _shiftLightness(brandPrimary, -0.12);
     final primarySubtleColor = Color.lerp(brandPrimary, Colors.white, 0.86)!;
     final highlightColor = Color.lerp(brandPrimary, Colors.white, 0.9)!;
-    final navActiveBackgroundColor = Color.lerp(
-      brandPrimary,
-      Colors.white,
-      0.88,
-    )!;
+    final navActiveBackgroundColor = Color.lerp(brandPrimary, Colors.white, 0.88)!;
     final gradientEndColor = _shiftLightness(brandPrimary, -0.06);
 
     return AppTheme(
@@ -175,20 +170,11 @@ class AppTheme {
               as ExtraThemeColors,
       exraTextStyles:
           exraTextStyles.copyWith(
-                highlightedTextStyle: exraTextStyles.highlightedTextStyle
-                    .copyWith(color: brandPrimary),
-                linkTextStyle: exraTextStyles.linkTextStyle.copyWith(
-                  color: brandPrimary,
-                ),
-                buttonTextStyle: exraTextStyles.buttonTextStyle.copyWith(
-                  color: onBrandPrimary,
-                ),
-                tabActiveTextStyle: exraTextStyles.tabActiveTextStyle.copyWith(
-                  color: brandPrimary,
-                ),
-                codeTextStyle: exraTextStyles.codeTextStyle.copyWith(
-                  color: brandPrimary,
-                ),
+                highlightedTextStyle: exraTextStyles.highlightedTextStyle.copyWith(color: brandPrimary),
+                linkTextStyle: exraTextStyles.linkTextStyle.copyWith(color: brandPrimary),
+                buttonTextStyle: exraTextStyles.buttonTextStyle.copyWith(color: onBrandPrimary),
+                tabActiveTextStyle: exraTextStyles.tabActiveTextStyle.copyWith(color: brandPrimary),
+                codeTextStyle: exraTextStyles.codeTextStyle.copyWith(color: brandPrimary),
               )
               as ExraTextStyles,
     );
@@ -220,25 +206,17 @@ class AppTheme {
       iconTheme: IconThemeData(color: activeIcon),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
-        foregroundColor: Color(0xFF00003D),
+        foregroundColor: textPrimary,
         centerTitle: true,
         elevation: 0,
         leadingWidth: 85,
-        titleTextStyle: textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w500,
-          color: Color(0xFF00003D),
-        ),
+        titleTextStyle: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500, color: textPrimary),
         // The bar is see-through: guessed from it, the status bar icons came out white on the light page
-        systemOverlayStyle: isDark
-            ? SystemUiOverlayStyle.light
-            : SystemUiOverlayStyle.dark,
+        systemOverlayStyle: isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       ),
       actionIconTheme: ActionIconThemeData(
         backButtonIconBuilder: (context) => Container(
-          decoration: BoxDecoration(
-            color: surface,
-            borderRadius: BorderRadius.circular(12),
-          ),
+          decoration: BoxDecoration(color: surface, borderRadius: BorderRadius.circular(12)),
           padding: const EdgeInsets.all(12.0),
           child: Icon(Icons.arrow_back_ios_new, size: 14, color: textPrimary),
         ),
@@ -286,9 +264,7 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           foregroundColor: onPrimary,
           backgroundColor: primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),
       ),
@@ -379,9 +355,7 @@ class AppTheme {
   /// Text and icons drawn on a cargo colour: white on a dark or saturated one, ink on a light one
   /// (yellow, light green). The loading screen, the splash and the share cards use it.
   static Color onBrand(Color background) =>
-      ThemeData.estimateBrightnessForColor(background) == Brightness.dark
-      ? Colors.white
-      : const Color(0xFF1F2430);
+      ThemeData.estimateBrightnessForColor(background) == Brightness.dark ? Colors.white : const Color(0xFF1F2430);
 
   static Color? parseHexColor(String? value) {
     if (value == null) return null;
@@ -572,28 +546,20 @@ class ExtraThemeColors extends ThemeExtension<ExtraThemeColors> {
       navActiveIcon: navActiveIcon ?? this.navActiveIcon,
       navInactiveIcon: navInactiveIcon ?? this.navInactiveIcon,
       navActiveBackground: navActiveBackground ?? this.navActiveBackground,
-      primaryGradientColors:
-          primaryGradientColors ?? this.primaryGradientColors,
+      primaryGradientColors: primaryGradientColors ?? this.primaryGradientColors,
       buttonSecondary: buttonSecondary ?? this.buttonSecondary,
     );
   }
 
   @override
-  ThemeExtension<ExtraThemeColors> lerp(
-    covariant ThemeExtension<ExtraThemeColors>? other,
-    double t,
-  ) {
+  ThemeExtension<ExtraThemeColors> lerp(covariant ThemeExtension<ExtraThemeColors>? other, double t) {
     if (other is! ExtraThemeColors) {
       return this;
     }
     return ExtraThemeColors(
       highlightColor: Color.lerp(highlightColor, other.highlightColor, t)!,
       shadowColor: Color.lerp(shadowColor, other.shadowColor, t)!,
-      textSecondaryColor: Color.lerp(
-        textSecondaryColor,
-        other.textSecondaryColor,
-        t,
-      )!,
+      textSecondaryColor: Color.lerp(textSecondaryColor, other.textSecondaryColor, t)!,
       primarySubtle: Color.lerp(primarySubtle, other.primarySubtle, t)!,
       linkColor: Color.lerp(linkColor, other.linkColor, t)!,
       hintColor: Color.lerp(hintColor, other.hintColor, t)!,
@@ -613,38 +579,22 @@ class ExtraThemeColors extends ThemeExtension<ExtraThemeColors> {
       accentTeal: Color.lerp(accentTeal, other.accentTeal, t)!,
       accentYellow: Color.lerp(accentYellow, other.accentYellow, t)!,
       shimmerBase: Color.lerp(shimmerBase, other.shimmerBase, t)!,
-      shimmerHighlight: Color.lerp(
-        shimmerHighlight,
-        other.shimmerHighlight,
-        t,
-      )!,
+      shimmerHighlight: Color.lerp(shimmerHighlight, other.shimmerHighlight, t)!,
       overlayDark: Color.lerp(overlayDark, other.overlayDark, t)!,
       overlayLight: Color.lerp(overlayLight, other.overlayLight, t)!,
       badgeBackground: Color.lerp(badgeBackground, other.badgeBackground, t)!,
       badgeText: Color.lerp(badgeText, other.badgeText, t)!,
       cardBorder: Color.lerp(cardBorder, other.cardBorder, t)!,
       inputBorder: Color.lerp(inputBorder, other.inputBorder, t)!,
-      inputFocusBorder: Color.lerp(
-        inputFocusBorder,
-        other.inputFocusBorder,
-        t,
-      )!,
+      inputFocusBorder: Color.lerp(inputFocusBorder, other.inputFocusBorder, t)!,
       dividerLight: Color.lerp(dividerLight, other.dividerLight, t)!,
       navActiveIcon: Color.lerp(navActiveIcon, other.navActiveIcon, t)!,
       navInactiveIcon: Color.lerp(navInactiveIcon, other.navInactiveIcon, t)!,
-      navActiveBackground: Color.lerp(
-        navActiveBackground,
-        other.navActiveBackground,
-        t,
-      )!,
+      navActiveBackground: Color.lerp(navActiveBackground, other.navActiveBackground, t)!,
       buttonSecondary: Color.lerp(buttonSecondary, other.buttonSecondary, t)!,
       primaryGradientColors: List<Color>.generate(
         primaryGradientColors.length,
-        (index) => Color.lerp(
-          primaryGradientColors[index],
-          other.primaryGradientColors[index],
-          t,
-        )!,
+        (index) => Color.lerp(primaryGradientColors[index], other.primaryGradientColors[index], t)!,
       ),
     );
   }
@@ -733,89 +683,40 @@ class ExraTextStyles extends ThemeExtension<ExraTextStyles> {
       captionTextStyle: captionTextStyle ?? this.captionTextStyle,
       overlineTextStyle: overlineTextStyle ?? this.overlineTextStyle,
       cardTitleTextStyle: cardTitleTextStyle ?? this.cardTitleTextStyle,
-      cardSubtitleTextStyle:
-          cardSubtitleTextStyle ?? this.cardSubtitleTextStyle,
+      cardSubtitleTextStyle: cardSubtitleTextStyle ?? this.cardSubtitleTextStyle,
       inputTextStyle: inputTextStyle ?? this.inputTextStyle,
       inputLabelTextStyle: inputLabelTextStyle ?? this.inputLabelTextStyle,
       inputHintTextStyle: inputHintTextStyle ?? this.inputHintTextStyle,
       badgeTextStyle: badgeTextStyle ?? this.badgeTextStyle,
       tabActiveTextStyle: tabActiveTextStyle ?? this.tabActiveTextStyle,
       tabInactiveTextStyle: tabInactiveTextStyle ?? this.tabInactiveTextStyle,
-      sectionHeaderTextStyle:
-          sectionHeaderTextStyle ?? this.sectionHeaderTextStyle,
+      sectionHeaderTextStyle: sectionHeaderTextStyle ?? this.sectionHeaderTextStyle,
       priceTextStyle: priceTextStyle ?? this.priceTextStyle,
       codeTextStyle: codeTextStyle ?? this.codeTextStyle,
     );
   }
 
   @override
-  ThemeExtension<ExraTextStyles> lerp(
-    covariant ThemeExtension<ExraTextStyles>? other,
-    double t,
-  ) {
+  ThemeExtension<ExraTextStyles> lerp(covariant ThemeExtension<ExraTextStyles>? other, double t) {
     if (other is! ExraTextStyles) {
       return this;
     }
     return ExraTextStyles(
-      highlightedTextStyle: TextStyle.lerp(
-        highlightedTextStyle,
-        other.highlightedTextStyle,
-        t,
-      )!,
+      highlightedTextStyle: TextStyle.lerp(highlightedTextStyle, other.highlightedTextStyle, t)!,
       digitTextStyle: TextStyle.lerp(digitTextStyle, other.digitTextStyle, t)!,
       linkTextStyle: TextStyle.lerp(linkTextStyle, other.linkTextStyle, t)!,
-      buttonTextStyle: TextStyle.lerp(
-        buttonTextStyle,
-        other.buttonTextStyle,
-        t,
-      )!,
-      captionTextStyle: TextStyle.lerp(
-        captionTextStyle,
-        other.captionTextStyle,
-        t,
-      )!,
-      overlineTextStyle: TextStyle.lerp(
-        overlineTextStyle,
-        other.overlineTextStyle,
-        t,
-      )!,
-      cardTitleTextStyle: TextStyle.lerp(
-        cardTitleTextStyle,
-        other.cardTitleTextStyle,
-        t,
-      )!,
-      cardSubtitleTextStyle: TextStyle.lerp(
-        cardSubtitleTextStyle,
-        other.cardSubtitleTextStyle,
-        t,
-      )!,
+      buttonTextStyle: TextStyle.lerp(buttonTextStyle, other.buttonTextStyle, t)!,
+      captionTextStyle: TextStyle.lerp(captionTextStyle, other.captionTextStyle, t)!,
+      overlineTextStyle: TextStyle.lerp(overlineTextStyle, other.overlineTextStyle, t)!,
+      cardTitleTextStyle: TextStyle.lerp(cardTitleTextStyle, other.cardTitleTextStyle, t)!,
+      cardSubtitleTextStyle: TextStyle.lerp(cardSubtitleTextStyle, other.cardSubtitleTextStyle, t)!,
       inputTextStyle: TextStyle.lerp(inputTextStyle, other.inputTextStyle, t)!,
-      inputLabelTextStyle: TextStyle.lerp(
-        inputLabelTextStyle,
-        other.inputLabelTextStyle,
-        t,
-      )!,
-      inputHintTextStyle: TextStyle.lerp(
-        inputHintTextStyle,
-        other.inputHintTextStyle,
-        t,
-      )!,
+      inputLabelTextStyle: TextStyle.lerp(inputLabelTextStyle, other.inputLabelTextStyle, t)!,
+      inputHintTextStyle: TextStyle.lerp(inputHintTextStyle, other.inputHintTextStyle, t)!,
       badgeTextStyle: TextStyle.lerp(badgeTextStyle, other.badgeTextStyle, t)!,
-      tabActiveTextStyle: TextStyle.lerp(
-        tabActiveTextStyle,
-        other.tabActiveTextStyle,
-        t,
-      )!,
-      tabInactiveTextStyle: TextStyle.lerp(
-        tabInactiveTextStyle,
-        other.tabInactiveTextStyle,
-        t,
-      )!,
-      sectionHeaderTextStyle: TextStyle.lerp(
-        sectionHeaderTextStyle,
-        other.sectionHeaderTextStyle,
-        t,
-      )!,
+      tabActiveTextStyle: TextStyle.lerp(tabActiveTextStyle, other.tabActiveTextStyle, t)!,
+      tabInactiveTextStyle: TextStyle.lerp(tabInactiveTextStyle, other.tabInactiveTextStyle, t)!,
+      sectionHeaderTextStyle: TextStyle.lerp(sectionHeaderTextStyle, other.sectionHeaderTextStyle, t)!,
       priceTextStyle: TextStyle.lerp(priceTextStyle, other.priceTextStyle, t)!,
       codeTextStyle: TextStyle.lerp(codeTextStyle, other.codeTextStyle, t)!,
     );
@@ -824,10 +725,8 @@ class ExraTextStyles extends ThemeExtension<ExraTextStyles> {
 
 extension ThemeBuildContextX on BuildContext {
   AppTheme get appTheme => Theme.of(this).extension<AppTheme>()!;
-  ExraTextStyles get extraTextStyles =>
-      Theme.of(this).extension<ExraTextStyles>()!;
-  ExtraThemeColors get extraColors =>
-      Theme.of(this).extension<ExtraThemeColors>()!;
+  ExraTextStyles get extraTextStyles => Theme.of(this).extension<ExraTextStyles>()!;
+  ExtraThemeColors get extraColors => Theme.of(this).extension<ExtraThemeColors>()!;
 }
 
 extension ThemeX on ThemeData {
