@@ -1,0 +1,69 @@
+name: github_explorer
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Core & State Management
+  flutter_riverpod: ^3.0.3 # State management
+  riverpod_annotation: ^3.0.3 # Code generation for Riverpod
+  go_router: ^16.2.0 # Routing
+  shared_preferences: ^2.2.2 # Simple key-value storage (settings)
+
+  # Networking
+  dio: ^5.8.0+1
+  tf_dio_cache: ^1.0.2
+
+  # Analytics & Monitoring (Requires Network Connection)
+  connectivity_plus: ^6.1.4 # Network connectivity status
+
+  # Data Models & Serialization
+  freezed_annotation: ^3.0.0 # Code generation for immutable classes
+  json_annotation: ^4.9.0 # JSON serialization helpers
+  equatable: ^2.0.5 # Simplify equality comparisons
+
+  # Utilities
+  logger: ^2.0.2+1 # Logging utility
+
+  # UI & Theming
+  cupertino_icons: ^1.0.8
+  cached_network_image: ^3.4.1 # Caching network images
+  flutter_vector_icons: ^2.0.0 # More icon options
+  shimmer: ^3.0.0 # Shimmer effect for loading placeholders
+  google_fonts: ^6.1.0 # Custom fonts from Google Fonts
+  github: ^9.26.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Linting & Code Analysis
+  flutter_lints: ^6.0.0
+  riverpod_lint: ^3.0.3 # Custom lints for Riverpod
+
+  # Code Generation
+  build_runner: ^2.10.4
+  riverpod_generator: ^3.0.3 # Riverpod code generator
+  go_router_builder: ^4.1.1 # GoRouter code generator
+  freezed: ^3.0.4 # Freezed code generator
+  json_serializable: ^6.9.4 # JSON serialization generator
+
+flutter:
+
+  uses-material-design: true
+
+  generate: true # Enables code generation for Riverpod, Freezed, and JSON serialization.
+
+# Assets Configuration, used by gassets.sh script to generate assets.dart file
+assets_dir: "assets"
+assets_output_file: "lib/config/assets.dart"
+assets_class_name: "Assets"
