@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../config/router/router.dart';
 
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/bloc/connectivity_cubit.dart';
@@ -10,6 +13,7 @@ import '../bloc/users_bloc.dart';
 import '../bloc/users_event.dart';
 import '../bloc/users_state.dart';
 import '../widgets/users_list.dart';
+import '../widgets/users_search_bar.dart';
 
 class UsersScreen extends StatelessWidget {
   const UsersScreen({super.key});
@@ -24,7 +28,17 @@ class UsersScreen extends StatelessWidget {
         if (bloc.state.users.isError) bloc.add(const UsersRefreshed());
       },
       child: Scaffold(
-        appBar: AppBar(title: Text(l10n.usersTitle)),
+        appBar: AppBar(
+          title: Text(l10n.usersTitle),
+          actions: [
+            IconButton(
+              tooltip: l10n.settingsTitle,
+              icon: const Icon(Icons.settings_outlined),
+              onPressed: () => context.push(AppRoutes.settings),
+            ),
+          ],
+          bottom: const UsersSearchBar(),
+        ),
         body: BlocBuilder<UsersBloc, UsersState>(
           buildWhen: (previous, current) => previous.users != current.users,
           builder: (context, state) {

@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:github_explorer/core/errors/app_exception.dart';
 import 'package:github_explorer/core/state/loadable.dart';
 import 'package:github_explorer/features/users/data/models/user.dart';
+import 'package:github_explorer/features/users/data/models/users_query.dart';
 import 'package:github_explorer/features/users/data/repositories/users_repository.dart';
 import 'package:github_explorer/features/users/presentation/bloc/users_bloc.dart';
 import 'package:github_explorer/features/users/presentation/bloc/users_event.dart';
@@ -26,6 +27,8 @@ void main() {
   late _MockUsersRepository repository;
   final firstPage = _users(1, UsersRepository.pageSize);
   final secondPage = _users(UsersRepository.pageSize + 1, 5);
+
+  setUpAll(() => registerFallbackValue(const UsersQuery()));
 
   setUp(() => repository = _MockUsersRepository());
 
@@ -68,6 +71,7 @@ void main() {
       UsersState(
         users: Loadable.success([...firstPage, ...secondPage]),
         hasReachedEnd: true,
+        page: 2,
       ),
     ],
   );
@@ -124,5 +128,153 @@ void main() {
 
     await completer.future.timeout(const Duration(seconds: 1));
     await bloc.close();
+  });
+
+  group('search and filters', () {
+    const searchQuery = UsersQuery(text: 'linus');
+    const sortedQuery = UsersQuery(
+      text: 'linus',
+      accountType: AccountType.user,
+      sort: UserSort.followers,
+    );
+
+    blocTest<UsersBloc, UsersState>(
+      'searches by text after the debounce',
+      build: () {
+        when(
+          () => repository.searchUsers(searchQuery, page: 1),
+        ).thenAnswer((_) async => secondPage);
+        return UsersBloc(repository, searchDebounce: Duration.zero);
+      },
+      act: (bloc) => bloc.add(const UsersSearchChanged('linus')),
+      expect: () => [
+        const UsersState(query: searchQuery),
+        UsersState(
+          users: Loadable.success(secondPage),
+          hasReachedEnd: true,
+          query: searchQuery,
+        ),
+      ],
+      verify: (_) {
+        verify(() => repository.searchUsers(searchQuery, page: 1)).called(1);
+        verifyNever(() => repository.getUsers(since: any(named: 'since')));
+      },
+    );
+
+    blocTest<UsersBloc, UsersState>(
+      'only the latest search is requested while typing',
+      build: () {
+        when(
+          () => repository.searchUsers(any(), page: any(named: 'page')),
+        ).thenAnswer((_) async => secondPage);
+        return UsersBloc(
+          repository,
+          searchDebounce: const Duration(milliseconds: 50),
+        );
+      },
+      act: (bloc) {
+        bloc
+          ..add(const UsersSearchChanged('l'))
+          ..add(const UsersSearchChanged('li'))
+          ..add(const UsersSearchChanged('lin'));
+      },
+      wait: const Duration(milliseconds: 200),
+      verify: (_) {
+        verify(
+          () => repository.searchUsers(const UsersQuery(text: 'lin'), page: 1),
+        ).called(1);
+        verifyNever(
+          () => repository.searchUsers(
+            const UsersQuery(text: 'l'),
+            page: any(named: 'page'),
+          ),
+        );
+      },
+    );
+
+    blocTest<UsersBloc, UsersState>(
+      'applies filters and sort on top of the current text',
+      build: () {
+        when(
+          () => repository.searchUsers(sortedQuery, page: 1),
+        ).thenAnswer((_) async => secondPage);
+        return UsersBloc(repository, searchDebounce: Duration.zero);
+      },
+      seed: () => const UsersState(query: searchQuery),
+      act: (bloc) => bloc.add(
+        const UsersFilterChanged(
+          accountType: AccountType.user,
+          sort: UserSort.followers,
+          order: SortOrder.desc,
+        ),
+      ),
+      verify: (bloc) {
+        expect(bloc.state.query, sortedQuery);
+        expect(bloc.state.users.valueOrNull, secondPage);
+      },
+    );
+
+    blocTest<UsersBloc, UsersState>(
+      'returns to the plain list when search and filters are cleared',
+      build: () {
+        when(
+          () => repository.getUsers(since: 0),
+        ).thenAnswer((_) async => firstPage);
+        return UsersBloc(repository, searchDebounce: Duration.zero);
+      },
+      seed: () => const UsersState(query: searchQuery),
+      act: (bloc) => bloc.add(const UsersSearchChanged('')),
+      verify: (bloc) {
+        expect(bloc.state.query, const UsersQuery());
+        expect(bloc.state.users.valueOrNull, firstPage);
+        verify(() => repository.getUsers(since: 0)).called(1);
+      },
+    );
+
+    blocTest<UsersBloc, UsersState>(
+      'requests the next search page by page number',
+      build: () {
+        when(
+          () => repository.searchUsers(searchQuery, page: 2),
+        ).thenAnswer((_) async => secondPage);
+        return UsersBloc(repository);
+      },
+      seed: () =>
+          UsersState(users: Loadable.success(firstPage), query: searchQuery),
+      act: (bloc) => bloc.add(const UsersNextPageRequested()),
+      verify: (bloc) {
+        verify(() => repository.searchUsers(searchQuery, page: 2)).called(1);
+        expect(bloc.state.page, 2);
+      },
+    );
+
+    blocTest<UsersBloc, UsersState>(
+      'stops at the GitHub search result limit',
+      build: () {
+        when(
+          () => repository.searchUsers(searchQuery, page: 34),
+        ).thenAnswer((_) async => firstPage);
+        return UsersBloc(repository);
+      },
+      seed: () => UsersState(
+        users: Loadable.success(firstPage),
+        query: searchQuery,
+        page: 33,
+      ),
+      act: (bloc) => bloc.add(const UsersNextPageRequested()),
+      verify: (bloc) => expect(bloc.state.hasReachedEnd, isTrue),
+    );
+
+    blocTest<UsersBloc, UsersState>(
+      'shows an empty result for a search without matches',
+      build: () {
+        when(
+          () => repository.searchUsers(searchQuery, page: 1),
+        ).thenAnswer((_) async => []);
+        return UsersBloc(repository, searchDebounce: Duration.zero);
+      },
+      act: (bloc) => bloc.add(const UsersSearchChanged('linus')),
+      verify: (bloc) => expect(bloc.state.users.isEmpty, isTrue),
+    );
   });
 }

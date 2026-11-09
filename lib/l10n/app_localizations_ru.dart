@@ -66,4 +66,58 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get following => 'Подписки';
+
+  @override
+  String get searchHint => 'Поиск пользователей';
+
+  @override
+  String get filtersTitle => 'Фильтры';
+
+  @override
+  String get resetFilters => 'Сбросить';
+
+  @override
+  String get accountTypeTitle => 'Тип аккаунта';
+
+  @override
+  String get accountTypeAll => 'Все';
+
+  @override
+  String get accountTypeUser => 'Пользователи';
+
+  @override
+  String get accountTypeOrg => 'Организации';
+
+  @override
+  String get sortByTitle => 'Сортировка';
+
+  @override
+  String get sortBestMatch => 'Лучшее совпадение';
+
+  @override
+  String get sortFollowers => 'По подписчикам';
+
+  @override
+  String get sortRepositories => 'По репозиториям';
+
+  @override
+  String get sortJoined => 'По дате регистрации';
+
+  @override
+  String get orderTitle => 'Порядок';
+
+  @override
+  String get orderDescending => 'По убыванию';
+
+  @override
+  String get orderAscending => 'По возрастанию';
+
+  @override
+  String get settingsTitle => 'Настройки';
+
+  @override
+  String get languageTitle => 'Язык';
+
+  @override
+  String get languageSystem => 'Как в системе';
 }

@@ -211,6 +211,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Following'**
   String get following;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search users'**
+  String get searchHint;
+
+  /// No description provided for @filtersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filtersTitle;
+
+  /// No description provided for @resetFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get resetFilters;
+
+  /// No description provided for @accountTypeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account type'**
+  String get accountTypeTitle;
+
+  /// No description provided for @accountTypeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get accountTypeAll;
+
+  /// No description provided for @accountTypeUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get accountTypeUser;
+
+  /// No description provided for @accountTypeOrg.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizations'**
+  String get accountTypeOrg;
+
+  /// No description provided for @sortByTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get sortByTitle;
+
+  /// No description provided for @sortBestMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Best match'**
+  String get sortBestMatch;
+
+  /// No description provided for @sortFollowers.
+  ///
+  /// In en, this message translates to:
+  /// **'Most followers'**
+  String get sortFollowers;
+
+  /// No description provided for @sortRepositories.
+  ///
+  /// In en, this message translates to:
+  /// **'Repositories'**
+  String get sortRepositories;
+
+  /// No description provided for @sortJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined date'**
+  String get sortJoined;
+
+  /// No description provided for @orderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Order'**
+  String get orderTitle;
+
+  /// No description provided for @orderDescending.
+  ///
+  /// In en, this message translates to:
+  /// **'Descending'**
+  String get orderDescending;
+
+  /// No description provided for @orderAscending.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascending'**
+  String get orderAscending;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @languageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageTitle;
+
+  /// No description provided for @languageSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System default'**
+  String get languageSystem;
 }
 
 class _AppLocalizationsDelegate

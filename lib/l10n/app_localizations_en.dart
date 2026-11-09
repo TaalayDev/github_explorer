@@ -67,4 +67,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get following => 'Following';
+
+  @override
+  String get searchHint => 'Search users';
+
+  @override
+  String get filtersTitle => 'Filters';
+
+  @override
+  String get resetFilters => 'Reset';
+
+  @override
+  String get accountTypeTitle => 'Account type';
+
+  @override
+  String get accountTypeAll => 'All';
+
+  @override
+  String get accountTypeUser => 'Users';
+
+  @override
+  String get accountTypeOrg => 'Organizations';
+
+  @override
+  String get sortByTitle => 'Sort by';
+
+  @override
+  String get sortBestMatch => 'Best match';
+
+  @override
+  String get sortFollowers => 'Most followers';
+
+  @override
+  String get sortRepositories => 'Repositories';
+
+  @override
+  String get sortJoined => 'Joined date';
+
+  @override
+  String get orderTitle => 'Order';
+
+  @override
+  String get orderDescending => 'Descending';
+
+  @override
+  String get orderAscending => 'Ascending';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get languageTitle => 'Language';
+
+  @override
+  String get languageSystem => 'System default';
 }
