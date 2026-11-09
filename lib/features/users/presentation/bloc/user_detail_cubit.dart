@@ -1,46 +1,23 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/errors/app_exception.dart';
+import '../../../../core/state/loadable.dart';
 import '../../data/models/user_detail.dart';
 import '../../data/repositories/users_repository.dart';
 
-enum UserDetailStatus { loading, success, failure }
-
-class UserDetailState extends Equatable {
-  const UserDetailState({
-    this.status = UserDetailStatus.loading,
-    this.user,
-    this.errorType,
-  });
-
-  final UserDetailStatus status;
-  final UserDetail? user;
-  final AppErrorType? errorType;
-
-  @override
-  List<Object?> get props => [status, user, errorType];
-}
-
-class UserDetailCubit extends Cubit<UserDetailState> {
+class UserDetailCubit extends Cubit<Loadable<UserDetail>> {
   UserDetailCubit(this._repository, this._login)
-    : super(const UserDetailState());
+    : super(const Loadable.loading());
 
   final UsersRepository _repository;
   final String _login;
 
   Future<void> load() async {
-    emit(const UserDetailState());
+    emit(const Loadable.loading());
     try {
-      final user = await _repository.getUser(_login);
-      emit(UserDetailState(status: UserDetailStatus.success, user: user));
+      emit(Loadable.success(await _repository.getUser(_login)));
     } on AppException catch (exception) {
-      emit(
-        UserDetailState(
-          status: UserDetailStatus.failure,
-          errorType: exception.type,
-        ),
-      );
+      emit(Loadable.error(exception.type.name));
     }
   }
 }

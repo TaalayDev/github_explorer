@@ -20,27 +20,28 @@ class UsersScreen extends StatelessWidget {
     return BlocListener<ConnectivityCubit, bool>(
       listenWhen: (previous, current) => !previous && current,
       listener: (context, isOnline) {
-        final state = context.read<UsersBloc>().state;
-        if (state.status == UsersStatus.failure) {
-          context.read<UsersBloc>().add(const UsersRefreshed());
-        }
+        final bloc = context.read<UsersBloc>();
+        if (bloc.state.users.isError) bloc.add(const UsersRefreshed());
       },
       child: Scaffold(
         appBar: AppBar(title: Text(l10n.usersTitle)),
         body: BlocBuilder<UsersBloc, UsersState>(
+          buildWhen: (previous, current) => previous.users != current.users,
           builder: (context, state) {
-            if (state.users.isEmpty) {
-              return switch (state.status) {
-                UsersStatus.failure => ErrorView(
-                  message: state.errorType!.message(l10n),
-                  onRetry: () =>
-                      context.read<UsersBloc>().add(const UsersRefreshed()),
-                ),
-                UsersStatus.success => Center(child: Text(l10n.emptyUsers)),
-                _ => const LoadingIndicator(),
-              };
-            }
-            return const UsersList();
+            return state.users.when(
+              success: (_) => const UsersList(),
+              empty: () => Center(child: Text(l10n.emptyUsers)),
+              error: (message, previous) => previous == null
+                  ? ErrorView(
+                      message: localizedError(l10n, message),
+                      onRetry: () =>
+                          context.read<UsersBloc>().add(const UsersRefreshed()),
+                    )
+                  : const UsersList(),
+              loading: (previous) => previous == null
+                  ? const LoadingIndicator()
+                  : const UsersList(),
+            );
           },
         ),
       ),

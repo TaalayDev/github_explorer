@@ -13,13 +13,8 @@ class UsersRepository {
 
   Future<List<User>> getUsers({required int since}) async {
     try {
-      final response = await _dio.get<List<dynamic>>(
-        '/users',
-        queryParameters: {'since': since, 'per_page': pageSize},
-      );
-      return response.data!
-          .map((json) => User.fromJson(json as Map<String, dynamic>))
-          .toList();
+      final response = await _dio.get<List<dynamic>>('/users', queryParameters: {'since': since, 'per_page': pageSize});
+      return response.data!.map((json) => User.fromJson(json as Map<String, dynamic>)).toList();
     } on DioException catch (exception) {
       throw mapDioException(exception);
     }

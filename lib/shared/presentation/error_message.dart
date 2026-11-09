@@ -12,3 +12,7 @@ extension AppErrorTypeMessage on AppErrorType {
     };
   }
 }
+
+String localizedError(AppLocalizations l10n, String? message) {
+  return AppErrorType.fromName(message).message(l10n);
+}

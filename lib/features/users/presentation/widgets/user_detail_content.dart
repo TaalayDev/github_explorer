@@ -29,24 +29,17 @@ class UserDetailContent extends StatelessWidget {
           Center(
             child: Text(
               user.displayName,
-              style: textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+              style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
           ),
           Center(
-            child: Text(
-              user.login,
-              style: textTheme.titleMedium?.copyWith(color: secondary),
-            ),
+            child: Text(user.login, style: textTheme.titleMedium?.copyWith(color: secondary)),
           ),
           const SizedBox(height: 16),
           Text(
             user.bio ?? l10n.noBio,
-            style: textTheme.bodyMedium?.copyWith(
-              color: user.bio == null ? secondary : null,
-            ),
+            style: textTheme.bodyMedium?.copyWith(color: user.bio == null ? secondary : null),
           ),
           const SizedBox(height: 24),
           Row(
@@ -58,28 +51,11 @@ class UserDetailContent extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           if (user.company != null)
-            UserInfoRow(
-              icon: Icons.business_outlined,
-              label: l10n.company,
-              value: user.company!,
-            ),
+            UserInfoRow(icon: Icons.business_outlined, label: l10n.company, value: user.company!),
           if (user.location != null)
-            UserInfoRow(
-              icon: Icons.place_outlined,
-              label: l10n.location,
-              value: user.location!,
-            ),
-          if (user.blog != null)
-            UserInfoRow(
-              icon: Icons.link,
-              label: l10n.website,
-              value: user.blog!,
-            ),
-          UserInfoRow(
-            icon: Icons.calendar_today_outlined,
-            label: l10n.joined,
-            value: joined,
-          ),
+            UserInfoRow(icon: Icons.place_outlined, label: l10n.location, value: user.location!),
+          if (user.blog != null) UserInfoRow(icon: Icons.link, label: l10n.website, value: user.blog!),
+          UserInfoRow(icon: Icons.calendar_today_outlined, label: l10n.joined, value: joined),
         ],
       ),
     );
@@ -99,18 +75,11 @@ class UserStat extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            NumberFormat.compact(
-              locale: Localizations.localeOf(context).toString(),
-            ).format(value),
+            NumberFormat.compact(locale: Localizations.localeOf(context).toString()).format(value),
             style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 4),
-          Text(
-            label,
-            style: textTheme.bodySmall?.copyWith(
-              color: context.extraColors.textSecondaryColor,
-            ),
-          ),
+          Text(label, style: textTheme.bodySmall?.copyWith(color: context.extraColors.textSecondaryColor)),
         ],
       ),
     );
@@ -118,12 +87,7 @@ class UserStat extends StatelessWidget {
 }
 
 class UserInfoRow extends StatelessWidget {
-  const UserInfoRow({
-    super.key,
-    required this.icon,
-    required this.label,
-    required this.value,
-  });
+  const UserInfoRow({super.key, required this.icon, required this.label, required this.value});
 
   final IconData icon;
   final String label;
@@ -143,12 +107,7 @@ class UserInfoRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  label,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(color: secondary),
-                ),
+                Text(label, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: secondary)),
                 Text(value),
               ],
             ),

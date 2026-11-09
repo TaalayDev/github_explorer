@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +9,6 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/presentation/error_message.dart';
 import '../bloc/users_bloc.dart';
 import '../bloc/users_event.dart';
-import '../bloc/users_state.dart';
 import 'user_list_tile.dart';
 
 const _loadMoreThreshold = 400.0;
@@ -45,25 +46,22 @@ class _UsersListState extends State<UsersList> {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<UsersBloc>().state;
-    final hasFooter =
-        state.status == UsersStatus.loadingMore ||
-        state.status == UsersStatus.failure;
+    final users = state.users.valueOrElse(const []);
+    final hasFooter = state.users.isLoading || state.users.isError;
     return RefreshIndicator(
-      onRefresh: () async {
-        final bloc = context.read<UsersBloc>()..add(const UsersRefreshed());
-        await bloc.stream.firstWhere((state) => !state.isBusy);
+      onRefresh: () {
+        final completer = Completer<void>();
+        context.read<UsersBloc>().add(UsersRefreshed(completer: completer));
+        return completer.future;
       },
       child: ListView.builder(
         controller: _controller,
         physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: state.users.length + (hasFooter ? 1 : 0),
+        itemCount: users.length + (hasFooter ? 1 : 0),
         itemBuilder: (context, index) {
-          if (index < state.users.length) {
-            final user = state.users[index];
-            return UserListTile(
-              user: user,
-              onTap: () => context.push(AppRoutes.userPath(user.login)),
-            );
+          if (index < users.length) {
+            final user = users[index];
+            return UserListTile(user: user, onTap: () => context.push(AppRoutes.userPath(user.login)));
           }
           return const UsersListFooter();
         },
@@ -78,17 +76,16 @@ class UsersListFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<UsersBloc>().state;
-    if (state.status == UsersStatus.failure) {
+    if (state.users.isError) {
       final l10n = AppLocalizations.of(context);
       return Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Text(state.errorType!.message(l10n), textAlign: TextAlign.center),
+            Text(localizedError(l10n, state.users.errorMessage), textAlign: TextAlign.center),
             const SizedBox(height: 8),
             TextButton(
-              onPressed: () =>
-                  context.read<UsersBloc>().add(const UsersNextPageRequested()),
+              onPressed: () => context.read<UsersBloc>().add(const UsersNextPageRequested()),
               child: Text(l10n.retry),
             ),
           ],

@@ -1,34 +1,18 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/errors/app_exception.dart';
+import '../../../../core/state/loadable.dart';
 import '../../data/models/user.dart';
 
-enum UsersStatus { initial, loading, loadingMore, success, failure }
-
 class UsersState extends Equatable {
-  const UsersState({
-    this.status = UsersStatus.initial,
-    this.users = const [],
-    this.hasReachedEnd = false,
-    this.errorType,
-  });
+  const UsersState({this.users = const Loadable.loading(), this.hasReachedEnd = false});
 
-  final UsersStatus status;
-  final List<User> users;
+  final Loadable<List<User>> users;
   final bool hasReachedEnd;
-  final AppErrorType? errorType;
 
-  bool get isBusy => status == UsersStatus.loading || status == UsersStatus.loadingMore;
-
-  UsersState copyWith({UsersStatus? status, List<User>? users, bool? hasReachedEnd, AppErrorType? errorType}) {
-    return UsersState(
-      status: status ?? this.status,
-      users: users ?? this.users,
-      hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
-      errorType: errorType,
-    );
+  UsersState copyWith({Loadable<List<User>>? users, bool? hasReachedEnd}) {
+    return UsersState(users: users ?? this.users, hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd);
   }
 
   @override
-  List<Object?> get props => [status, users, hasReachedEnd, errorType];
+  List<Object?> get props => [users, hasReachedEnd];
 }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:github_explorer/config/theme/theme.dart';
 import 'package:github_explorer/core/errors/app_exception.dart';
+import 'package:github_explorer/core/state/loadable.dart';
 import 'package:github_explorer/features/users/presentation/bloc/users_bloc.dart';
 import 'package:github_explorer/features/users/presentation/bloc/users_event.dart';
 import 'package:github_explorer/features/users/presentation/bloc/users_state.dart';
@@ -50,9 +51,7 @@ void main() {
   }
 
   testWidgets('shows a loader while the first page loads', (tester) async {
-    when(
-      () => usersBloc.state,
-    ).thenReturn(const UsersState(status: UsersStatus.loading));
+    when(() => usersBloc.state).thenReturn(const UsersState());
 
     await pumpScreen(tester);
 
@@ -61,10 +60,7 @@ void main() {
 
   testWidgets('shows a localized error with retry', (tester) async {
     when(() => usersBloc.state).thenReturn(
-      const UsersState(
-        status: UsersStatus.failure,
-        errorType: AppErrorType.noConnection,
-      ),
+      UsersState(users: Loadable.error(AppErrorType.noConnection.name)),
     );
 
     await pumpScreen(tester, locale: const Locale('ru'));
@@ -75,10 +71,7 @@ void main() {
 
   testWidgets('falls back to English for unsupported locales', (tester) async {
     when(() => usersBloc.state).thenReturn(
-      const UsersState(
-        status: UsersStatus.failure,
-        errorType: AppErrorType.noConnection,
-      ),
+      UsersState(users: Loadable.error(AppErrorType.noConnection.name)),
     );
 
     await pumpScreen(tester, locale: const Locale('fr'));

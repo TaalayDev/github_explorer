@@ -16,16 +16,8 @@ class UserListTile extends StatelessWidget {
       onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       leading: UserAvatar(url: user.avatarUrl, radius: 24),
-      title: Text(
-        user.login,
-        style: Theme.of(
-          context,
-        ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
-      ),
-      subtitle: Text(
-        '#${user.id}',
-        style: TextStyle(color: context.extraColors.textSecondaryColor),
-      ),
+      title: Text(user.login, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+      subtitle: Text('#${user.id}', style: TextStyle(color: context.extraColors.textSecondaryColor)),
       trailing: Icon(Icons.chevron_right, color: context.extraColors.hintColor),
     );
   }

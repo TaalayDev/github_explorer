@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:github_explorer/core/errors/app_exception.dart';
+import 'package:github_explorer/core/state/loadable.dart';
 import 'package:github_explorer/features/users/data/models/user.dart';
 import 'package:github_explorer/features/users/data/repositories/users_repository.dart';
 import 'package:github_explorer/features/users/presentation/bloc/users_bloc.dart';
@@ -35,9 +38,18 @@ void main() {
       return UsersBloc(repository);
     },
     act: (bloc) => bloc.add(const UsersRefreshed()),
-    expect: () => [
-      const UsersState(status: UsersStatus.loading),
-      UsersState(status: UsersStatus.success, users: firstPage),
+    expect: () => [UsersState(users: Loadable.success(firstPage))],
+  );
+
+  blocTest<UsersBloc, UsersState>(
+    'reports an empty result',
+    build: () {
+      when(() => repository.getUsers(since: 0)).thenAnswer((_) async => []);
+      return UsersBloc(repository);
+    },
+    act: (bloc) => bloc.add(const UsersRefreshed()),
+    expect: () => const [
+      UsersState(users: Loadable.empty(), hasReachedEnd: true),
     ],
   );
 
@@ -49,13 +61,12 @@ void main() {
       ).thenAnswer((_) async => secondPage);
       return UsersBloc(repository);
     },
-    seed: () => UsersState(status: UsersStatus.success, users: firstPage),
+    seed: () => UsersState(users: Loadable.success(firstPage)),
     act: (bloc) => bloc.add(const UsersNextPageRequested()),
     expect: () => [
-      UsersState(status: UsersStatus.loadingMore, users: firstPage),
+      UsersState(users: Loadable.loading(firstPage)),
       UsersState(
-        status: UsersStatus.success,
-        users: [...firstPage, ...secondPage],
+        users: Loadable.success([...firstPage, ...secondPage]),
         hasReachedEnd: true,
       ),
     ],
@@ -64,11 +75,8 @@ void main() {
   blocTest<UsersBloc, UsersState>(
     'does not request more once the end is reached',
     build: () => UsersBloc(repository),
-    seed: () => UsersState(
-      status: UsersStatus.success,
-      users: secondPage,
-      hasReachedEnd: true,
-    ),
+    seed: () =>
+        UsersState(users: Loadable.success(secondPage), hasReachedEnd: true),
     act: (bloc) => bloc.add(const UsersNextPageRequested()),
     expect: () => <UsersState>[],
     verify: (_) =>
@@ -84,12 +92,8 @@ void main() {
       return UsersBloc(repository);
     },
     act: (bloc) => bloc.add(const UsersRefreshed()),
-    expect: () => const [
-      UsersState(status: UsersStatus.loading),
-      UsersState(
-        status: UsersStatus.failure,
-        errorType: AppErrorType.noConnection,
-      ),
+    expect: () => [
+      UsersState(users: Loadable.error(AppErrorType.noConnection.name)),
     ],
   );
 
@@ -101,15 +105,24 @@ void main() {
       ).thenThrow(const AppException(AppErrorType.server));
       return UsersBloc(repository);
     },
-    seed: () => UsersState(status: UsersStatus.success, users: firstPage),
+    seed: () => UsersState(users: Loadable.success(firstPage)),
     act: (bloc) => bloc.add(const UsersNextPageRequested()),
     expect: () => [
-      UsersState(status: UsersStatus.loadingMore, users: firstPage),
-      UsersState(
-        status: UsersStatus.failure,
-        users: firstPage,
-        errorType: AppErrorType.server,
-      ),
+      UsersState(users: Loadable.loading(firstPage)),
+      UsersState(users: Loadable.error(AppErrorType.server.name, firstPage)),
     ],
   );
+
+  test('completes the refresh completer', () async {
+    when(
+      () => repository.getUsers(since: 0),
+    ).thenAnswer((_) async => firstPage);
+    final bloc = UsersBloc(repository);
+    final completer = Completer<void>();
+
+    bloc.add(UsersRefreshed(completer: completer));
+
+    await completer.future.timeout(const Duration(seconds: 1));
+    await bloc.close();
+  });
 }

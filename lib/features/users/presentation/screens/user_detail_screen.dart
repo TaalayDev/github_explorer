@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/state/loadable.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../shared/presentation/error_message.dart';
 import '../../../../shared/presentation/widgets/error_view.dart';
 import '../../../../shared/presentation/widgets/loading_indicator.dart';
+import '../../data/models/user_detail.dart';
 import '../bloc/user_detail_cubit.dart';
 import '../widgets/user_detail_content.dart';
 
@@ -18,16 +20,17 @@ class UserDetailScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(login)),
-      body: BlocBuilder<UserDetailCubit, UserDetailState>(
+      body: BlocBuilder<UserDetailCubit, Loadable<UserDetail>>(
         builder: (context, state) {
-          return switch (state.status) {
-            UserDetailStatus.loading => const LoadingIndicator(),
-            UserDetailStatus.failure => ErrorView(
-              message: state.errorType!.message(l10n),
+          return state.when(
+            success: (user) => UserDetailContent(user: user),
+            error: (message, _) => ErrorView(
+              message: localizedError(l10n, message),
               onRetry: context.read<UserDetailCubit>().load,
             ),
-            UserDetailStatus.success => UserDetailContent(user: state.user!),
-          };
+            empty: () => const SizedBox.shrink(),
+            loading: (_) => const LoadingIndicator(),
+          );
         },
       ),
     );
