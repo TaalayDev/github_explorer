@@ -1,27 +1,21 @@
 part of 'theme.dart';
 
-/// GitHub "Dark default" palette.
 abstract final class _Gh {
-  // Canvas
   static const canvasDefault = Color(0xFF0D1117);
   static const canvasSubtle = Color(0xFF161B22);
   static const canvasInset = Color(0xFF010409);
   static const neutralMuted = Color(0xFF21262D);
 
-  // Borders
   static const borderDefault = Color(0xFF30363D);
   static const borderMuted = Color(0xFF21262D);
 
-  // Foreground
   static const fgDefault = Color(0xFFE6EDF3);
   static const fgMuted = Color(0xFF8D96A0);
   static const fgSubtle = Color(0xFF6E7681);
 
-  // Accent (blue)
   static const accentFg = Color(0xFF4493F8);
   static const accentEmphasis = Color(0xFF1F6FEB);
 
-  // Semantic
   static const successFg = Color(0xFF3FB950);
   static const successEmphasis = Color(0xFF238636);
   static const attentionFg = Color(0xFFD29922);
