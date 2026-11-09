@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:github_explorer/config/router/router.dart';
 import 'package:github_explorer/features/splash/presentation/screens/splash_screen.dart';
-import 'package:github_explorer/features/users/presentation/screens/users_screen.dart';
 import 'package:go_router/go_router.dart';
 
 void main() {
@@ -18,7 +17,7 @@ void main() {
         ),
         GoRoute(
           path: AppRoutes.users,
-          builder: (context, state) => const UsersScreen(),
+          builder: (context, state) => const _UsersStub(),
         ),
       ],
     );
@@ -33,7 +32,7 @@ void main() {
     await tester.pump(splashDuration - const Duration(milliseconds: 1));
 
     expect(find.byType(SplashScreen), findsOneWidget);
-    expect(find.byType(UsersScreen), findsNothing);
+    expect(find.byType(_UsersStub), findsNothing);
   });
 
   testWidgets('opens the users screen after the delay', (tester) async {
@@ -41,7 +40,7 @@ void main() {
     await tester.pump(splashDuration);
     await tester.pumpAndSettle();
 
-    expect(find.byType(UsersScreen), findsOneWidget);
+    expect(find.byType(_UsersStub), findsOneWidget);
     expect(find.byType(SplashScreen), findsNothing);
   });
 
@@ -54,4 +53,11 @@ void main() {
 
     expect(tester.takeException(), isNull);
   });
+}
+
+class _UsersStub extends StatelessWidget {
+  const _UsersStub();
+
+  @override
+  Widget build(BuildContext context) => const SizedBox();
 }

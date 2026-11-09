@@ -39,6 +39,10 @@ dependencies:
   flutter_vector_icons: ^2.0.0 # More icon options
   shimmer: ^3.0.0 # Shimmer effect for loading placeholders
   google_fonts: ^6.1.0 # Custom fonts from Google Fonts
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+  bloc_concurrency: ^0.3.0
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +57,8 @@ dev_dependencies:
   freezed: ^3.0.4 # Freezed code generator
   json_serializable: ^6.9.4 # JSON serialization generator
   flutter_native_splash: ^2.4.7
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.5
 
 flutter:
 

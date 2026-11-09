@@ -1,0 +1,22 @@
+{
+  "@@locale": "en",
+  "appTitle": "GitHub Explorer",
+  "usersTitle": "GitHub Users",
+  "profileTitle": "Profile",
+  "retry": "Retry",
+  "offlineBanner": "No internet connection",
+  "errorNoConnection": "No internet connection. Check your network and try again.",
+  "errorRateLimited": "GitHub API rate limit exceeded. Please try again later.",
+  "errorNotFound": "User not found.",
+  "errorServer": "GitHub is unavailable right now. Please try again later.",
+  "errorUnknown": "Something went wrong. Please try again.",
+  "emptyUsers": "No users found",
+  "noBio": "No bio",
+  "company": "Company",
+  "location": "Location",
+  "website": "Website",
+  "joined": "Joined",
+  "repositories": "Repositories",
+  "followers": "Followers",
+  "following": "Following"
+}

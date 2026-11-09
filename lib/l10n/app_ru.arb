@@ -1,0 +1,22 @@
+{
+  "@@locale": "ru",
+  "appTitle": "GitHub Explorer",
+  "usersTitle": "Пользователи GitHub",
+  "profileTitle": "Профиль",
+  "retry": "Повторить",
+  "offlineBanner": "Нет подключения к интернету",
+  "errorNoConnection": "Нет подключения к интернету. Проверьте сеть и попробуйте снова.",
+  "errorRateLimited": "Превышен лимит запросов к GitHub API. Попробуйте позже.",
+  "errorNotFound": "Пользователь не найден.",
+  "errorServer": "GitHub сейчас недоступен. Попробуйте позже.",
+  "errorUnknown": "Что-то пошло не так. Попробуйте снова.",
+  "emptyUsers": "Пользователи не найдены",
+  "noBio": "Нет описания",
+  "company": "Компания",
+  "location": "Местоположение",
+  "website": "Сайт",
+  "joined": "Регистрация",
+  "repositories": "Репозитории",
+  "followers": "Подписчики",
+  "following": "Подписки"
+}
